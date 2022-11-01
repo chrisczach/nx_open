@@ -92,7 +92,7 @@
     </message>
     <message>
       <source>Verifying update package</source>
-      <translation type="unfinished">Verifying update package</translation>
+      <translation>Bekrefter oppdateringspakken</translation>
     </message>
     <message>
       <source>Cannot connect to the System</source>
@@ -1001,7 +1001,7 @@
     </message>
     <message>
       <source>Joystick Settings...</source>
-      <translation type="unfinished">Joystick Settings...</translation>
+      <translation>Joystick-innstillinger...</translation>
     </message>
     <message>
       <source>Advanced...</source>
@@ -1566,27 +1566,27 @@
     </message>
     <message>
       <source>This camera does not support advanced PTZ</source>
-      <translation type="unfinished">This camera does not support advanced PTZ</translation>
+      <translation>Dette kameraet støtter ikke avansert PTZ</translation>
     </message>
     <message>
       <source>Zooming out...</source>
-      <translation type="unfinished">Zooming out...</translation>
+      <translation>Zoomer ut...</translation>
     </message>
     <message>
       <source>Moving...</source>
-      <translation type="unfinished">Moving...</translation>
+      <translation>Flytter...</translation>
     </message>
     <message>
       <source>Zooming in...</source>
-      <translation type="unfinished">Zooming in...</translation>
+      <translation>Zoomer inn...</translation>
     </message>
     <message>
       <source>Focusing...</source>
-      <translation type="unfinished">Focusing...</translation>
+      <translation>Fokuserer...</translation>
     </message>
     <message>
       <source>PTZ can only be used in the live mode</source>
-      <translation type="unfinished">PTZ can only be used in the live mode</translation>
+      <translation>PTZ kan bare brukes i live-modus</translation>
     </message>
   </context>
   <context>
@@ -2052,15 +2052,15 @@
     </message>
     <message>
       <source>Storage added</source>
-      <translation type="unfinished">Storage added</translation>
+      <translation>Lagring lagt til</translation>
     </message>
     <message>
       <source>Storage updated</source>
-      <translation type="unfinished">Storage updated</translation>
+      <translation>Lagring oppdatert</translation>
     </message>
     <message>
       <source>Storage removed</source>
-      <translation type="unfinished">Storage removed</translation>
+      <translation>Lagring fjernet</translation>
     </message>
     <message>
       <source>MitM Attack</source>
@@ -2290,7 +2290,7 @@
     </message>
     <message>
       <source>High pre-recording time will increase RAM utilization on the server</source>
-      <translation type="unfinished">High pre-recording time will increase RAM utilization on the server</translation>
+      <translation>Høy forhåndsopptakstid vil øke RAM-utnyttelsen på serveren</translation>
     </message>
   </context>
   <context>
@@ -3101,7 +3101,7 @@ til %1</translation>
     </message>
     <message>
       <source>The audio capturing device supports no suitable audio formats.Please select another audio device or &quot;none&quot; in the Screen Recording settings.</source>
-      <translation type="unfinished">The audio capturing device supports no suitable audio formats.Please select another audio device or &quot;none&quot; in the Screen Recording settings.</translation>
+      <translation>Lydopptaksenheten støtter ingen passende lydformater. Velg en annen lydenhet eller &quot;ingen&quot; i skjermopptaksinnstillingene.</translation>
     </message>
   </context>
   <context>
@@ -4563,19 +4563,19 @@ til %1</translation>
     <name>QnScreenshotLoader</name>
     <message>
       <source>Top left corner</source>
-      <translation type="unfinished">Top left corner</translation>
+      <translation>Øvre venstre hjørne</translation>
     </message>
     <message>
       <source>Top right corner</source>
-      <translation type="unfinished">Top right corner</translation>
+      <translation>Øvre høyre hjørne</translation>
     </message>
     <message>
       <source>Bottom left corner</source>
-      <translation type="unfinished">Bottom left corner</translation>
+      <translation>Nedre venstre hjørne</translation>
     </message>
     <message>
       <source>Bottom right corner</source>
-      <translation type="unfinished">Bottom right corner</translation>
+      <translation>Nedre høyre hjørne</translation>
     </message>
   </context>
   <context>
@@ -5247,7 +5247,7 @@ Hvis du hadde tenkt å flytte analysedata til et annet lagringssted, kan du kont
     </message>
     <message>
       <source>Insufficient permissions to store analytics data.</source>
-      <translation type="unfinished">Insufficient permissions to store analytics data.</translation>
+      <translation>Utilstrekkelige tillatelser til å lagre analysedata.</translation>
     </message>
   </context>
   <context>
@@ -6118,7 +6118,7 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     <name>QnWorkbenchController</name>
     <message>
       <source>To switch between cameras press Shift + Arrow</source>
-      <translation type="unfinished">To switch between cameras press Shift + Arrow</translation>
+      <translation>For å bytte mellom kameraer, trykk Shift + Pil</translation>
     </message>
   </context>
   <context>
@@ -6132,19 +6132,19 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     <name>QnWorkbenchPtzHandler</name>
     <message>
       <source>Zooming in...</source>
-      <translation type="unfinished">Zooming in...</translation>
+      <translation>Zoomer inn...</translation>
     </message>
     <message>
       <source>Zooming out...</source>
-      <translation type="unfinished">Zooming out...</translation>
+      <translation>Zoomer ut...</translation>
     </message>
     <message>
       <source>Moving...</source>
-      <translation type="unfinished">Moving...</translation>
+      <translation>Flytter...</translation>
     </message>
     <message>
       <source>Focusing...</source>
-      <translation type="unfinished">Focusing...</translation>
+      <translation>Fokuserer...</translation>
     </message>
     <message>
       <source>Camera %1 does not support PTZ</source>
@@ -6239,11 +6239,11 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     </message>
     <message>
       <source>No timestamp</source>
-      <translation type="unfinished">No timestamp</translation>
+      <translation>Ingen tidsstempel</translation>
     </message>
     <message>
       <source>No camera name</source>
-      <translation type="unfinished">No camera name</translation>
+      <translation>Ingen kameranavn</translation>
     </message>
     <message>
       <source>Camera name:</source>
@@ -7049,7 +7049,7 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     </message>
     <message>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>Deaktivert</translation>
     </message>
   </context>
   <context>
@@ -7436,11 +7436,11 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     </message>
     <message>
       <source>Automatic selection</source>
-      <translation type="unfinished">Automatic selection</translation>
+      <translation>Automatisk valg</translation>
     </message>
     <message>
       <source>Use if supported</source>
-      <translation type="unfinished">Use if supported</translation>
+      <translation>Bruk hvis støttet</translation>
     </message>
     <message>
       <source>Never</source>
@@ -7575,7 +7575,7 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     </message>
     <message>
       <source>High pre-recording time will increase RAM utilization on the server</source>
-      <translation type="unfinished">High pre-recording time will increase RAM utilization on the server</translation>
+      <translation>Høy forhåndsopptakstid vil øke RAM-utnyttelsen på serveren</translation>
     </message>
   </context>
   <context>
@@ -7862,11 +7862,11 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     </message>
     <message>
       <source>File %1 does not exist</source>
-      <translation type="unfinished">File %1 does not exist</translation>
+      <translation>Filen %1 finnes ikke</translation>
     </message>
     <message>
       <source>There is no valid client package to download</source>
-      <translation type="unfinished">There is no valid client package to download</translation>
+      <translation>Det er ingen gyldig klientpakke å laste ned</translation>
     </message>
     <message>
       <source>Cannot download update file</source>
@@ -8423,11 +8423,11 @@ Vi anbefaler at du ikke åpner denne nettsiden. Hvis du forstår risikoen, kan d
     </message>
     <message>
       <source>Add Info</source>
-      <translation type="unfinished">Add Info</translation>
+      <translation>Legg til info</translation>
     </message>
     <message>
       <source>Delete Info</source>
-      <translation type="unfinished">Delete Info</translation>
+      <translation>Slett info</translation>
     </message>
     <message>
       <source>Info</source>
@@ -9975,11 +9975,11 @@ Caution: This password cannot be reset. If you lose it, the archive will be unre
     </message>
     <message>
       <source>Local and LDAP users will be automatically logged out if their session exceeds the specified duration.</source>
-      <translation type="unfinished">Local and LDAP users will be automatically logged out if their session exceeds the specified duration.</translation>
+      <translation>Lokale og LDAP-brukere vil automatisk logges ut hvis økten deres overskrider den angitte varigheten.</translation>
     </message>
     <message>
       <source>Unlimited user session lifetime threatens overall System security and may lead to degradation in System performance</source>
-      <translation type="unfinished">Unlimited user session lifetime threatens overall System security and may lead to degradation in System performance</translation>
+      <translation>Ubegrenset levetid for brukerøkter truer den generelle systemsikkerheten og kan føre til forringelse av systemytelsen</translation>
     </message>
     <message>
       <source>It is recommended to have user session lifetime not greater than %1</source>
