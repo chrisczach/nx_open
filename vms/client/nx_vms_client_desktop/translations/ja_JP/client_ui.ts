@@ -1345,7 +1345,7 @@
     </message>
     <message>
       <source>Enable tile interface</source>
-      <translation>タイルのインタ フェースを有効にする</translation>
+      <translation>タイル状インターフェイスを有効化</translation>
     </message>
   </context>
   <context>
@@ -2560,7 +2560,7 @@
     </message>
     <message>
       <source>Display text for:</source>
-      <translation>テキスト表示:</translation>
+      <translation>テキスト表示期間:</translation>
     </message>
     <message>
       <source>Use custom text:</source>
