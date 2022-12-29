@@ -9,7 +9,6 @@ set(openSourceBuild ON CACHE BOOL "Is open source build" FORCE)
 # with the main project.
 set(productType "vms" CACHE STRING "Product type" FORCE)
 set(publicationType "local" CACHE STRING "Product publication type" FORCE)
-set(buildNumber "0" CACHE STRING "Build number" FORCE)
 
 set(withDesktopClient ON CACHE STRING "Enable desktop client" FORCE)
 
