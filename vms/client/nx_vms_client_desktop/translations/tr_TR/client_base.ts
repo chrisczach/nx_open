@@ -1009,11 +1009,11 @@
     </message>
     <message>
       <source>Copy Bookmark Text</source>
-      <translation type="unfinished">Copy Bookmark Text</translation>
+      <translation>Yer İşareti Metnini Kopyala</translation>
     </message>
     <message>
       <source>Copy Bookmarks Text</source>
-      <translation type="unfinished">Copy Bookmarks Text</translation>
+      <translation>Yer İmleri Metnini Kopyala</translation>
     </message>
     <message>
       <source>Web Page Settings...</source>
@@ -1737,7 +1737,7 @@
     </message>
     <message>
       <source>Certificate storage will be cleared.</source>
-      <translation type="unfinished">Certificate storage will be cleared.</translation>
+      <translation>Sertifika deposu temizlenecek.</translation>
     </message>
     <message>
       <source>Current client instance will be disconnected.</source>
@@ -2345,7 +2345,7 @@
     </message>
     <message>
       <source>Some rules are not valid and may not work</source>
-      <translation type="unfinished">Some rules are not valid and may not work</translation>
+      <translation>Bazı kurallar geçerli değil ve çalışmayabilir</translation>
     </message>
   </context>
   <context>
@@ -6975,7 +6975,7 @@ We recommend you not to open this web page. If you understand the risks, you can
     </message>
     <message>
       <source>Choose cameras...</source>
-      <translation type="unfinished">Choose cameras...</translation>
+      <translation>Kameraları seçin...</translation>
     </message>
     <message numerus="yes">
       <source>%n chosen devices</source>
@@ -7051,15 +7051,15 @@ We recommend you not to open this web page. If you understand the risks, you can
     <name>nx::vms::client::desktop::AudioRedirectPickerWidget</name>
     <message>
       <source>Select Device...</source>
-      <translation type="unfinished">Select Device...</translation>
+      <translation>Cihaz seçin...</translation>
     </message>
     <message>
       <source>Use audio stream from</source>
-      <translation type="unfinished">Use audio stream from</translation>
+      <translation>Şuradaki ses akışını kullan</translation>
     </message>
     <message>
       <source>Transmit audio stream to</source>
-      <translation type="unfinished">Transmit audio stream to</translation>
+      <translation>Ses akışını şuraya aktar</translation>
     </message>
     <message>
       <source>This device does not have an audio input, or it is not configured correctly. Select another device as an audio source.</source>
@@ -7079,23 +7079,23 @@ We recommend you not to open this web page. If you understand the risks, you can
     </message>
     <message>
       <source>Use this device for audio output</source>
-      <translation type="unfinished">Use this device for audio output</translation>
+      <translation>Ses çıkışı için bu cihazı kullanın</translation>
     </message>
     <message>
       <source>Use this camera for audio output</source>
-      <translation type="unfinished">Use this camera for audio output</translation>
+      <translation>Ses çıkışı için bu kamerayı kullanın</translation>
     </message>
     <message>
       <source>Use audio stream from another device</source>
-      <translation type="unfinished">Use audio stream from another device</translation>
+      <translation>Başka bir cihazdan ses akışı kullan</translation>
     </message>
     <message>
       <source>Use audio stream from another camera</source>
-      <translation type="unfinished">Use audio stream from another camera</translation>
+      <translation>Başka bir kameradan ses akışı kullan</translation>
     </message>
     <message>
       <source>Transmit audio stream to another device</source>
-      <translation type="unfinished">Transmit audio stream to another device</translation>
+      <translation>Ses akışını başka bir cihaza iletin</translation>
     </message>
     <message>
       <source>Transmit audio stream to another camera</source>
@@ -7231,11 +7231,11 @@ We recommend you not to open this web page. If you understand the risks, you can
     </message>
     <message>
       <source>Not supported</source>
-      <translation type="unfinished">Not supported</translation>
+      <translation>Desteklenmiyor</translation>
     </message>
     <message>
       <source>Backup is not supported for this device</source>
-      <translation type="unfinished">Backup is not supported for this device</translation>
+      <translation>Bu cihaz için yedekleme desteklenmiyor</translation>
     </message>
   </context>
   <context>
@@ -7246,7 +7246,7 @@ We recommend you not to open this web page. If you understand the risks, you can
     </message>
     <message>
       <source>What to backup</source>
-      <translation type="unfinished">What to backup</translation>
+      <translation>Ne yedeklemeli</translation>
     </message>
     <message>
       <source>Quality</source>
@@ -7264,7 +7264,7 @@ We recommend you not to open this web page. If you understand the risks, you can
     <name>nx::vms::client::desktop::BackupSettingsViewWidget</name>
     <message>
       <source>Nothing to backup</source>
-      <translation type="unfinished">Nothing to backup</translation>
+      <translation>Yedeklenecek bir şey yok</translation>
     </message>
   </context>
   <context>
@@ -7279,7 +7279,7 @@ We recommend you not to open this web page. If you understand the risks, you can
     </message>
     <message>
       <source>New added cameras</source>
-      <translation type="unfinished">New added cameras</translation>
+      <translation>Yeni eklenen kameralar</translation>
     </message>
     <message>
       <source>New added cameras settings will apply to all servers in the system.</source>
@@ -7329,7 +7329,7 @@ We recommend you not to open this web page. If you understand the risks, you can
     <message numerus="yes">
       <source>Backup is enabled for %n devices</source>
       <translation type="unfinished">
-        <numerusform>Backup is enabled for %n devices</numerusform>
+        <numerusform>%n cihazlar için yedekleme etkinleştirildi</numerusform>
         <numerusform>Backup is enabled for %n devices</numerusform>
       </translation>
     </message>
@@ -7443,15 +7443,15 @@ We recommend you not to open this web page. If you understand the risks, you can
     </message>
     <message>
       <source>Force Motion Detection</source>
-      <translation type="unfinished">Force Motion Detection</translation>
+      <translation>Hareket Algılamaya Zorla</translation>
     </message>
     <message>
       <source>Pan</source>
-      <translation type="unfinished">Pan</translation>
+      <translation>Sağ/Sol</translation>
     </message>
     <message>
       <source>Pan &amp; Tilt</source>
-      <translation type="unfinished">Pan &amp; Tilt</translation>
+      <translation>Pan-Tilt</translation>
     </message>
     <message>
       <source>Quality and frame rate (FPS) settings in the Recording Schedule will become irrelevant.</source>
@@ -7531,7 +7531,7 @@ We recommend you not to open this web page. If you understand the risks, you can
     </message>
     <message>
       <source>Force Motion Detection</source>
-      <translation type="unfinished">Force Motion Detection</translation>
+      <translation>Hareket Algılamaya Zorla</translation>
     </message>
     <message>
       <source>Select areas on the preview to set chosen sensitivity for.</source>
@@ -9962,7 +9962,7 @@ Caution: This password cannot be reset. If you lose it, the archive will be unre
     </message>
     <message>
       <source>Enables RTSP traffic encryption.</source>
-      <translation type="unfinished">Enables RTSP traffic encryption.</translation>
+      <translation>RTSP trafik şifrelemesini etkinleştirir.</translation>
     </message>
     <message>
       <source>days</source>
@@ -10021,7 +10021,7 @@ Caution: This password cannot be reset. If you lose it, the archive will be unre
     </message>
     <message>
       <source>Server Id: %1</source>
-      <translation type="unfinished">Server Id: %1</translation>
+      <translation>Sunucu Id: %1</translation>
     </message>
     <message>
       <source>This certificate does not match the certificate %1 is pinned to.</source>
@@ -10066,7 +10066,7 @@ Do not pin this certificate if you didn&apos;t modify %2 server SSL certificate.
     </message>
     <message>
       <source>I trust this server</source>
-      <translation type="unfinished">I trust this server</translation>
+      <translation>Bu sunucuya güveniyorum</translation>
     </message>
     <message>
       <source>Cannot verify the identity of %1</source>
@@ -10085,7 +10085,7 @@ Read this %2 to learn more about certificate validation.</translation>
     </message>
     <message>
       <source>certificate details</source>
-      <translation type="unfinished">certificate details</translation>
+      <translation>sertifika detayları</translation>
     </message>
     <message>
       <source>help article</source>
@@ -10824,11 +10824,11 @@ You can view %2 or read this %3 to learn more about the current problem.</transl
     <name>nx::vms::client::desktop::integrations::IntercomIntegration</name>
     <message>
       <source>Intercom Alarm Layout</source>
-      <translation type="unfinished">Intercom Alarm Layout</translation>
+      <translation>İnterkom Alarm Düzeni</translation>
     </message>
     <message>
       <source>Intercom Open Door</source>
-      <translation type="unfinished">Intercom Open Door</translation>
+      <translation>İnterkom Kapı Aç</translation>
     </message>
     <message>
       <source>Open door</source>
@@ -10934,7 +10934,7 @@ You can view %2 or read this %3 to learn more about the current problem.</transl
     </message>
     <message>
       <source>Cannot add the resource to the layout</source>
-      <translation type="unfinished">Cannot add the resource to the layout</translation>
+      <translation>Kaynak düzene eklenemiyor</translation>
     </message>
     <message>
       <source>Cannot find a widget corresponding to the specified item.</source>
@@ -11391,7 +11391,7 @@ Depolama yerini, Sunucu Ayarları iletişim kutusundaki &quot;Depolama Yönetimi
     </message>
     <message>
       <source>Press Esc to stop the tour.</source>
-      <translation type="unfinished">Press Esc to stop the tour.</translation>
+      <translation>Turu durdurmak için Esc tuşuna basın.</translation>
     </message>
   </context>
   <context>
