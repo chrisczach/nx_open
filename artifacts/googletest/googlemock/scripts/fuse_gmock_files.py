@@ -127,44 +127,43 @@ def ValidateOutputDir(output_dir):
 def FuseGMockH(gmock_root, output_dir):
   """Scans folder gmock_root to generate gmock/gmock.h in output_dir."""
 
-  output_file = open(os.path.join(output_dir, GMOCK_H_OUTPUT), 'w')
-  processed_files = set()  # Holds all gmock headers we've processed.
+  with open(os.path.join(output_dir, GMOCK_H_OUTPUT), 'w') as output_file:
+    processed_files = set()  # Holds all gmock headers we've processed.
 
-  def ProcessFile(gmock_header_path):
-    """Processes the given gmock header file."""
+    def ProcessFile(gmock_header_path):
+      """Processes the given gmock header file."""
 
-    # We don't process the same header twice.
-    if gmock_header_path in processed_files:
-      return
+      # We don't process the same header twice.
+      if gmock_header_path in processed_files:
+        return
 
-    processed_files.add(gmock_header_path)
+      processed_files.add(gmock_header_path)
 
-    # Reads each line in the given gmock header.
+          # Reads each line in the given gmock header.
 
-    with open(os.path.join(gmock_root, gmock_header_path), 'r') as fh:
-      for line in fh:
-        m = INCLUDE_GMOCK_FILE_REGEX.match(line)
-        if m:
-          # '#include "gmock/..."'
-          # - let's process it recursively.
-          ProcessFile('include/' + m.group(1))
-        else:
-          m = gtest.INCLUDE_GTEST_FILE_REGEX.match(line)
+      with open(os.path.join(gmock_root, gmock_header_path), 'r') as fh:
+        for line in fh:
+          m = INCLUDE_GMOCK_FILE_REGEX.match(line)
           if m:
-            # '#include "gtest/foo.h"'
-            # We translate it to "gtest/gtest.h", regardless of what foo is,
-            # since all gtest headers are fused into gtest/gtest.h.
-
-            # There is no need to #include gtest.h twice.
-            if gtest.GTEST_H_SEED not in processed_files:
-              processed_files.add(gtest.GTEST_H_SEED)
-              output_file.write('#include "%s"\n' % (gtest.GTEST_H_OUTPUT,))
+                      # '#include "gmock/..."'
+                      # - let's process it recursively.
+            ProcessFile(f'include/{m.group(1)}')
           else:
-            # Otherwise we copy the line unchanged to the output file.
-            output_file.write(line)
+            m = gtest.INCLUDE_GTEST_FILE_REGEX.match(line)
+            if m:
+              # '#include "gtest/foo.h"'
+              # We translate it to "gtest/gtest.h", regardless of what foo is,
+              # since all gtest headers are fused into gtest/gtest.h.
 
-  ProcessFile(GMOCK_H_SEED)
-  output_file.close()
+              # There is no need to #include gtest.h twice.
+              if gtest.GTEST_H_SEED not in processed_files:
+                processed_files.add(gtest.GTEST_H_SEED)
+                output_file.write('#include "%s"\n' % (gtest.GTEST_H_OUTPUT,))
+            else:
+              # Otherwise we copy the line unchanged to the output file.
+              output_file.write(line)
+
+    ProcessFile(GMOCK_H_SEED)
 
 
 def FuseGMockAllCcToFile(gmock_root, output_file):
@@ -199,13 +198,7 @@ def FuseGMockAllCcToFile(gmock_root, output_file):
             output_file.write('#include "%s"\n' % (GMOCK_H_OUTPUT,))
         else:
           m = gtest.INCLUDE_GTEST_FILE_REGEX.match(line)
-          if m:
-            # '#include "gtest/..."'
-            # There is no need to #include gtest.h as it has been
-            # #included by gtest-all.cc.
-
-            pass
-          else:
+          if not m:
             m = gtest.INCLUDE_SRC_FILE_REGEX.match(line)
             if m:
               # It's '#include "src/foo"' - let's process it recursively.

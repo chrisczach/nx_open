@@ -27,7 +27,7 @@ class Archiver():
                 compresslevel=compresslevel)
             self.add = self._add_to_tar
         else:
-            raise Exception("Unsupported archive format: %s" % file_name)
+            raise Exception(f"Unsupported archive format: {file_name}")
 
     def __enter__(self):
         return self

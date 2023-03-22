@@ -16,8 +16,11 @@ def run_and_log_command(command, **kwargs):
 
 
 def prepare_keychain(keychain_name, keychain_password):
-    keychain = \
-        keychain_name if keychain_name.endswith(".keychain") else keychain_name + ".keychain"
+    keychain = (
+        keychain_name
+        if keychain_name.endswith(".keychain")
+        else f"{keychain_name}.keychain"
+    )
     keychain_file = Path.home() / "Library" / "Keychains" / keychain
 
     keychains = subprocess.check_output(
@@ -60,8 +63,11 @@ def import_certificate(certificate_file, certificate_password, keychain=None, ig
 
 
 def set_key_partition_list(keychain_name, keychain_password):
-    keychain = \
-        keychain_name if keychain_name.endswith(".keychain") else keychain_name + ".keychain"
+    keychain = (
+        keychain_name
+        if keychain_name.endswith(".keychain")
+        else f"{keychain_name}.keychain"
+    )
 
     run_and_log_command(
         ["security", "set-key-partition-list", "-S", "apple-tool:,apple:", "-k", keychain_password, keychain],

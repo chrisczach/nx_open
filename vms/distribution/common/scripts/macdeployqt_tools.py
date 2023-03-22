@@ -128,9 +128,8 @@ def fix_binary(binary, bindir, libdir, qlibdir, tlibdir, qtver):
                     info_plist_path = join(qlibdir, framework_name, 'Resources', 'Info.plist')
                     info_plist = open(info_plist_path, 'rb').read().replace(b'_debug', b'')
 
-                    plist_obj = plistlib.load(io.BytesIO(info_plist))
-                    if plist_obj:
-                        plist_obj['CFBundleIdentifier'] = 'org.qt-project.{}'.format(name)
+                    if plist_obj := plistlib.load(io.BytesIO(info_plist)):
+                        plist_obj['CFBundleIdentifier'] = f'org.qt-project.{name}'
                         plist_obj['CFBundleVersion'] = qtver
                         plistlib.dump(plist_obj, open(join(resources_dir, 'Info.plist'), 'wb'))
 

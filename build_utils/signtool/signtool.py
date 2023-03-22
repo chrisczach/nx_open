@@ -88,8 +88,8 @@ def sign_file(
 def execute_command(command: List[str], timeout_s: int = 0) -> ExecuteCommandResult:
     try:
         logging.debug(
-            f'Running "{" ".join(command)}"'
-            f'{" with timeout " + str(timeout_s) + " seconds" if timeout_s else ""}')
+            f'Running "{" ".join(command)}"{f" with timeout {timeout_s} seconds" if timeout_s else ""}'
+        )
         execution_result = subprocess.run(command, capture_output=True, timeout=timeout_s)
 
     except FileNotFoundError as e:
@@ -112,8 +112,9 @@ def print_certificate_info(certificate_file: Path, password: str):
         return
 
     command = ['certutil', '-dump', '-p', password, str(certificate_file)]
-    process_result = execute_command(command, timeout_s=CERT_INFO_TIMEOUT_S)
-    if process_result:
+    if process_result := execute_command(
+        command, timeout_s=CERT_INFO_TIMEOUT_S
+    ):
         logging.debug(process_result.stdout.decode().strip())
     else:
         logging.warning(str(process_result))
@@ -146,13 +147,12 @@ def main():
 
     in_file_path = (working_dir / args.file).resolve()
     out_file_path = (working_dir / args.output).resolve() if args.output else None
-    result = sign_file(
+    if result := sign_file(
         in_file_path=in_file_path,
         out_file_path=out_file_path,
         config_file=args.config.resolve(),
-        sign_timeout_s=args.sign_timeout)
-
-    if result:
+        sign_timeout_s=args.sign_timeout,
+    ):
         print(f'File {in_file_path!s} was successfully signed.')
     else:
         sys.exit(f'FATAL ERROR: {in_file_path!s} was not signed.')

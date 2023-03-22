@@ -19,5 +19,5 @@ for line in args.input:
 
 args.output.write('#define TransactionDataTypes')
 for dataType in dataTypes:
-    args.output.write(' \\\n({})'.format(dataType))
+    args.output.write(f' \\\n({dataType})')
 args.output.write('\n')

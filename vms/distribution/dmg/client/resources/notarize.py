@@ -20,10 +20,7 @@ def get_request_uuid(request_result):
 
 def get_upload_error_message(request_result):
     error_data = request_result.get('product-errors')
-    if not error_data or not len(error_data):
-        return None
-
-    return error_data[0].get('message')
+    return error_data[0].get('message') if error_data and len(error_data) else None
 
 
 def execute(command):
@@ -91,7 +88,7 @@ def check_notarization_completion(options):
     if status == 'success':
         return True, True, "Success"
 
-    return True, False, "See errors in:\n{}".format(info.get('LogFileURL'))
+    return True, False, f"See errors in:\n{info.get('LogFileURL')}"
 
 
 def wait_for_notarization_completion(options, check_period_seconds):
@@ -184,7 +181,7 @@ def main():
     setup_notarize_parser(subparsers)
     setup_check_parser(subparsers)
 
-    if not len(sys.argv) > 1:
+    if len(sys.argv) <= 1:
         parser.print_help()
         exit()
 

@@ -24,7 +24,7 @@ def generate_conan_package_paths(conanfile):
             conanfile.dependencies.build.items(),
             conanfile.dependencies.host.items())}
 
-    content = "set(CONAN_DEPENDENCIES {})\n\n".format(" ".join(name for name in packages.keys()))
+    content = "set(CONAN_DEPENDENCIES {})\n\n".format(" ".join(packages))
 
     for name, path in packages.items():
         content += f"set(CONAN_{name.upper()}_ROOT \"{path}\")\n"
@@ -97,10 +97,9 @@ class NxOpenConan(ConanFile):
 
         self.requires("boost/1.78.0" "#298dce0adb40278309cc5f76fc92b47a")
 
-        if self.isWindows or self.isLinux:
-            if self.settings.arch == "x86_64":
-                self.requires("cuda-toolkit/11.7" "#78798fb75c85a676d43c9d1a8af4fe18")
-                self.requires("zlib/1.2.12" "#bb959a1d68d4c35d0fba4cc66f5bb25f")
+        if (self.isWindows or self.isLinux) and self.settings.arch == "x86_64":
+            self.requires("cuda-toolkit/11.7" "#78798fb75c85a676d43c9d1a8af4fe18")
+            self.requires("zlib/1.2.12" "#bb959a1d68d4c35d0fba4cc66f5bb25f")
 
         if self.isLinux:
             if self.settings.arch == "x86_64":
@@ -139,8 +138,8 @@ class NxOpenConan(ConanFile):
         self._add_documentation_requirements()
 
     def _add_documentation_requirements(self):
-        self.requires(f"vms_help/5.0_patch" "#8ef6477cf684f14f582906a5633460ad")
-        self.requires(f"vms_quick_start_guide/5.0" "#cf0e958c5edf4045eb6bbc41ee2cba5e")
+        self.requires('vms_help/5.0_patch#8ef6477cf684f14f582906a5633460ad')
+        self.requires('vms_quick_start_guide/5.0#cf0e958c5edf4045eb6bbc41ee2cba5e')
 
     def imports(self):
         if self.isLinux:
@@ -158,16 +157,12 @@ class NxOpenConan(ConanFile):
 
         if self.isLinux:
             if self.settings.arch == "x86_64":
-                copy_packages.append("libva")
-                copy_packages.append("intel-media-sdk")
-
+                copy_packages.extend(("libva", "intel-media-sdk"))
             if not self.isArm32:
                 copy_packages.append("ffmpeg")
         else:
             if self.isWindows:
-                copy_packages.append("intel-media-sdk-bin")
-                copy_packages.append("directx/JUN2010")
-
+                copy_packages.extend(("intel-media-sdk-bin", "directx/JUN2010"))
             copy_packages.append("ffmpeg")
 
         if self.isLinux or self.isWindows or self.isAndroid:

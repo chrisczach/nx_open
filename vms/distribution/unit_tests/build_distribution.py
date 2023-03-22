@@ -47,12 +47,11 @@ def get_unit_tests_list():
         cwd=conf.BUILD_DIR)
 
     for line in output.splitlines():
-        m = test_regex.match(line.decode("utf-8"))
-        if m:
-            test_target_name = m.group(1)
+        if m := test_regex.match(line.decode("utf-8")):
+            test_target_name = m[1]
             if limit_to_targets is not None and test_target_name not in limit_to_targets:
                 continue
-            yield m.group(1) + extension
+            yield test_target_name + extension
 
 # TODO: Remove this function once Go unit test dependency issue is fixed.
 def get_go_unit_tests_list(tests_directory: str):
@@ -103,7 +102,7 @@ def get_go_unit_tests_list(tests_directory: str):
         yield test_full_name
 
 def gatherFiles(source_dir, exclude):
-    reject_name = lambda name: any([fnmatch(name, pattern) for pattern in exclude])
+    reject_name = lambda name: any(fnmatch(name, pattern) for pattern in exclude)
     def filter_list(names):
         to_remove = [n for n in names if reject_name(n)]
         for name in to_remove:
@@ -155,9 +154,11 @@ def archiveByGlob(archiver, category, target_dir, source_dir, pattern, recursive
         files = []
         for root, _, dir_files in os.walk(source_dir):
             relative_root = os.path.relpath(root, source_dir)
-            for f in dir_files:
-                if fnmatch(f, pattern):
-                    files.append(os.path.normpath(join(relative_root, f)))
+            files.extend(
+                os.path.normpath(join(relative_root, f))
+                for f in dir_files
+                if fnmatch(f, pattern)
+            )
     else:
         full_pattern = join(source_dir, pattern)
         files = [os.path.relpath(f, source_dir) for f in iglob(full_pattern, recursive=recursive)]
@@ -314,7 +315,7 @@ if __name__ == "__main__":
         log_dir = os.path.dirname(conf.LOG_FILE)
         if not os.path.isdir(log_dir):
             os.makedirs(log_dir)
-        print("  See the log in %s" % conf.LOG_FILE)
+        print(f"  See the log in {conf.LOG_FILE}")
         logging.basicConfig(
             level=logging.INFO,
             format="%(message)s",

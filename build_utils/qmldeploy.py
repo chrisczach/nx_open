@@ -19,17 +19,17 @@ class QmlDeployUtil:
 
         self.scanner_path = self.find_qmlimportscanner(qt_host_root)
         if not self.scanner_path:
-            exit("qmlimportscanner is not found in {}".format(qt_host_root))
+            exit(f"qmlimportscanner is not found in {qt_host_root}")
             raise
 
         self.import_path = self.find_qml_import_path(qt_root)
         if not self.import_path:
-            exit("qml import path is not found in {}".format(qt_root))
+            exit(f"qml import path is not found in {qt_root}")
             raise
 
         self.modules_path = self.find_modules_path(qt_root)
         if not self.import_path:
-            exit("modules path is not found in {}".format(qt_root))
+            exit(f"modules path is not found in {qt_root}")
             raise
 
     @staticmethod
@@ -58,7 +58,7 @@ class QmlDeployUtil:
         process = subprocess.Popen(command, stdout=subprocess.PIPE)
 
         if not process:
-            exit("Cannot start {}".format(" ".join(command)))
+            exit(f'Cannot start {" ".join(command)}')
             return
 
         return json.load(process.stdout)
@@ -66,7 +66,7 @@ class QmlDeployUtil:
     @staticmethod
     def has_compiled_file(file, directory_contents):
         if file.endswith(".qml") or file.endswith(".js"):
-            return (file + "c") in directory_contents
+            return f"{file}c" in directory_contents
         return False
 
     @staticmethod
@@ -86,7 +86,7 @@ class QmlDeployUtil:
         return ignoref
 
     def get_qt_imports(self, imports):
-        if not type(imports) is list:
+        if type(imports) is not list:
             exit("Parsed imports is not a list.")
 
         qt_deps = []
@@ -123,7 +123,7 @@ class QmlDeployUtil:
         return result
 
     def get_plugin_information(self, plugin_name):
-        pri_file_name = os.path.join(self.modules_path, "qt_plugin_{}.pri".format(plugin_name))
+        pri_file_name = os.path.join(self.modules_path, f"qt_plugin_{plugin_name}.pri")
 
         if not os.path.exists(pri_file_name):
             return
@@ -133,19 +133,21 @@ class QmlDeployUtil:
 
         re_prefix = "QT_PLUGIN\\." + plugin_name + "\\."
 
-        m = re.search(re_prefix + "TYPE = (.+)", pri_data)
+        m = re.search(f"{re_prefix}TYPE = (.+)", pri_data)
         if not m:
             return
-        plugin_type = m.group(1)
+        plugin_type = m[1]
 
-        file_path = os.path.join(self.qt_root, "plugins", plugin_type, "lib" + plugin_name + ".a")
+        file_path = os.path.join(
+            self.qt_root, "plugins", plugin_type, f"lib{plugin_name}.a"
+        )
         if not os.path.exists(file_path):
             return
 
-        m = re.search(re_prefix + "CLASS_NAME = (.+)", pri_data)
+        m = re.search(f"{re_prefix}CLASS_NAME = (.+)", pri_data)
         if not m:
             return
-        plugin_class = m.group(1)
+        plugin_class = m[1]
 
         return {
             "name": plugin_name,
@@ -194,11 +196,7 @@ class QmlDeployUtil:
 
         imports = self.get_qt_imports(imports_dict)
 
-        if file_name:
-            output = open(file_name, "w")
-        else:
-            output = sys.stdout
-
+        output = open(file_name, "w") if file_name else sys.stdout
         for item in imports:
             path = item["path"]
             plugin = item["plugin"]
@@ -206,16 +204,13 @@ class QmlDeployUtil:
             if not plugin:
                 continue
 
-            name = os.path.join(path, "lib" + plugin + ".a")
+            name = os.path.join(path, f"lib{plugin}.a")
             if os.path.exists(name):
                 output.write(name + "\n")
 
         for plugin_name in additional_plugins:
-            info = self.get_plugin_information(plugin_name)
-            if not info:
-                continue
-
-            output.write(info["path"] + "\n")
+            if info := self.get_plugin_information(plugin_name):
+                output.write(info["path"] + "\n")
 
         if output != sys.stdout:
             output.close()
@@ -232,18 +227,12 @@ class QmlDeployUtil:
             out_file.write("#include <QtPlugin>\n\n")
 
             for item in imports:
-                class_name = item["class_name"]
-                if not class_name:
-                    continue
-
-                out_file.write("Q_IMPORT_PLUGIN({})\n".format(class_name))
+                if class_name := item["class_name"]:
+                    out_file.write(f"Q_IMPORT_PLUGIN({class_name})\n")
 
             for plugin_name in additional_plugins:
-                info = self.get_plugin_information(plugin_name)
-                if not info:
-                    continue
-
-                out_file.write("Q_IMPORT_PLUGIN({})\n".format(info["class_name"]))
+                if info := self.get_plugin_information(plugin_name):
+                    out_file.write(f'Q_IMPORT_PLUGIN({info["class_name"]})\n')
 
 
 def main():
@@ -265,7 +254,7 @@ def main():
     deploy_util = QmlDeployUtil(args.qt_root, args.qt_host_root)
     if args.qmlimportscanner:
         if not os.path.exists(args.qmlimportscanner):
-            exit("{}: not found".format(args.qmlimportscanner))
+            exit(f"{args.qmlimportscanner}: not found")
         deploy_util.scanner_path = args.qmlimportscanner
 
     if args.print_static_plugins:

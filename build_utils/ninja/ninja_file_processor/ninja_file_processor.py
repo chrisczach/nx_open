@@ -75,9 +75,11 @@ class NinjaFileProcessor(metaclass=ABCMeta):
 
         try:
             # If the currently processed file is older than the patch script, patch it.
-            if script_version_timestamp is not None:
-                if self._file_name.stat().st_mtime < script_version_timestamp:
-                    return True
+            if (
+                script_version_timestamp is not None
+                and self._file_name.stat().st_mtime < script_version_timestamp
+            ):
+                return True
 
             with open(self._file_name) as file:
                 first_line = next(file)
@@ -156,7 +158,7 @@ class NinjaFileProcessor(metaclass=ABCMeta):
 
     @classmethod
     def _escape_set(cls, unescaped_strings: set) -> set:
-        return set(cls._escape_string(string) for string in unescaped_strings)
+        return {cls._escape_string(string) for string in unescaped_strings}
 
     @classmethod
     def _escape_string(cls, unescaped_string: str) -> str:
@@ -164,7 +166,7 @@ class NinjaFileProcessor(metaclass=ABCMeta):
 
     @classmethod
     def _unescape_set(cls, escaped_strings: set) -> set:
-        return set(cls._unescape_string(string) for string in escaped_strings)
+        return {cls._unescape_string(string) for string in escaped_strings}
 
     @classmethod
     def _unescape_string(cls, escaped_string: str) -> str:

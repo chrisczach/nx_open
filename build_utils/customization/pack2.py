@@ -29,8 +29,7 @@ def find_filemap():
 def iterate_over_dict(dictionary, path):
     for key, value in dictionary.items():
         if type(value) is dict:
-            for nested_key, nested_value in iterate_over_dict(value, path / key):
-                yield (nested_key, nested_value)
+            yield from iterate_over_dict(value, path / key)
         else:
             yield (path / key, value)
 
@@ -82,7 +81,7 @@ def unpack(package_path, output_path, clean_package):
 
     for source, target in iterate_over_dict(filemap, unpacked_package_path):
         if not source.exists():
-            logging.warning('File {} not found'.format(source))
+            logging.warning(f'File {source} not found')
             continue
         copy_if_different(source, output_path / target)
 
@@ -147,8 +146,6 @@ def main():
 
     args = parser.parse_args()
 
-    log_level = logging.INFO if args.verbose else logging.WARNING
-
     if args.log:
         make_dirs(Path(args.log).parent)
         logging.basicConfig(
@@ -157,6 +154,8 @@ def main():
             filename=args.log,
             filemode='w')
     else:
+        log_level = logging.INFO if args.verbose else logging.WARNING
+
         logging.basicConfig(
             format='%(levelname)-8s %(message)s',
             level=log_level)

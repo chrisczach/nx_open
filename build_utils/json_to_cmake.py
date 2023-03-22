@@ -8,7 +8,7 @@ import json
 
 
 def join_prefix(s1, s2):
-    return "%s.%s" % (s1, s2) if s1 else s2
+    return f"{s1}.{s2}" if s1 else s2
 
 
 def parse_value(value):
@@ -21,10 +21,7 @@ def parse_value(value):
 
 
 def parse_list(l):
-    result = ""
-    for value in l:
-        result += "\n    " + parse_value(value)
-    return result
+    return "".join("\n    " + parse_value(value) for value in l)
 
 
 def parse_dict(d, prefix):
@@ -36,7 +33,7 @@ def parse_dict(d, prefix):
     for key, value in d.items():
         var = join_prefix(prefix, key)
         if type(value) is dict:
-            result.update(parse_dict(value, var))
+            result |= parse_dict(value, var)
         elif type(value) is list:
             result[var] = parse_list(value)
         else:
@@ -52,7 +49,7 @@ def convert_json_file_to_cmake_file(json_file_name, cmake_file_name, prefix=None
     with open(cmake_file_name, "w", encoding="utf-8") as cmake_file:
         if variables:
             for var, value in sorted(variables.items()):
-                cmake_file.write("set({} {})\n".format(var, value))
+                cmake_file.write(f"set({var} {value})\n")
 
 
 def main():

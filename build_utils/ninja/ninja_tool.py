@@ -46,20 +46,30 @@ class ParsedScriptData(NamedTuple):
                 [getattr(s, attr) for s in sources if getattr(s, attr) is not None] or
                 [None])[-1]
 
-        if not sources:
-            return ParsedScriptData()
-
-        return ParsedScriptData(
-            strengthened_targets={t for s in sources for t in s.strengthened_targets},
-            commands_to_run=[c for s in sources for c in s.commands_to_run],
-            do_clean=any([s for s in sources if s.do_clean]),
-            do_list_unknown=any([s for s in sources if s.do_list_unknown]),
-            verify_globs_path=_last_value_or_none("verify_globs_path"),
-            known_file_names={n for s in sources for n in s.known_file_names},
-            changed_files_list_file_name=_last_value_or_none("changed_files_list_file_name"),
-            affected_targets_list_file_name=_last_value_or_none("affected_targets_list_file_name"),
-            source_dir=_last_value_or_none("source_dir"),
-            added_known_directories={d for s in sources for d in s.added_known_directories})
+        return (
+            ParsedScriptData(
+                strengthened_targets={
+                    t for s in sources for t in s.strengthened_targets
+                },
+                commands_to_run=[c for s in sources for c in s.commands_to_run],
+                do_clean=any(s for s in sources if s.do_clean),
+                do_list_unknown=any(s for s in sources if s.do_list_unknown),
+                verify_globs_path=_last_value_or_none("verify_globs_path"),
+                known_file_names={n for s in sources for n in s.known_file_names},
+                changed_files_list_file_name=_last_value_or_none(
+                    "changed_files_list_file_name"
+                ),
+                affected_targets_list_file_name=_last_value_or_none(
+                    "affected_targets_list_file_name"
+                ),
+                source_dir=_last_value_or_none("source_dir"),
+                added_known_directories={
+                    d for s in sources for d in s.added_known_directories
+                },
+            )
+            if sources
+            else ParsedScriptData()
+        )
 
 
 def clean_build_directory(build_dir: Path,
@@ -79,7 +89,7 @@ def clean_build_directory(build_dir: Path,
     persistent_known_files = get_files_from_list_file(build_dir / PERSISTENT_KNOWN_FILES_FILE_NAME)
     conan_files = get_files_from_conan_manifest(build_dir / "conan_imports_manifest.txt")
 
-    all_known_files = additional_known_files if additional_known_files else set()
+    all_known_files = additional_known_files or set()
     for file_name in build_files | known_files | persistent_known_files | conan_files:
         file_path = Path(file_name)
         if file_path.is_absolute():
@@ -255,7 +265,7 @@ def _execute(
 
 
 def update_persistent_known_files_file(build_dir: Path, directories: Set[str]):
-    print(f"Updating persistent known files file...")
+    print("Updating persistent known files file...")
 
     persistent_known_files = build_dir / PERSISTENT_KNOWN_FILES_FILE_NAME
     if persistent_known_files.is_file():
@@ -264,12 +274,13 @@ def update_persistent_known_files_file(build_dir: Path, directories: Set[str]):
     else:
         current_files = []
 
-    unchanged_files = []
-    for file_path in current_files:
-        if set([p for p in file_path.parents] + [file_path]).intersection(directories):
-            continue
-        unchanged_files.append(file_path)
-
+    unchanged_files = [
+        file_path
+        for file_path in current_files
+        if not set(list(file_path.parents) + [file_path]).intersection(
+            directories
+        )
+    ]
     print(f"Adding files from directories {[str(d) for d in directories]!r}...")
     new_files = [f for d in directories for f in d.rglob("*")]
     with open(persistent_known_files, "w") as f:
@@ -282,10 +293,7 @@ def _has_data_for_patching(script_data: ParsedScriptData):
     if script_data.strengthened_targets:
         return True
 
-    if script_data.verify_globs_path:
-        return True
-
-    return False
+    return bool(script_data.verify_globs_path)
 
 
 def _parse_script_data(script_file_name: str) -> ParsedScriptData:
@@ -346,7 +354,8 @@ def _parse_splitted_command_line(command: str, args: List[str]) -> ParsedScriptD
                 '"add_directories_to_known_files" command.')
             return ParsedScriptData()
         return ParsedScriptData(
-            added_known_directories=set([Path(d).absolute() for d in args]))
+            added_known_directories={Path(d).absolute() for d in args}
+        )
 
     print(f"Unknown command: {command}")
     return ParsedScriptData()
@@ -357,7 +366,7 @@ def generate_list_of_targets_affected_by_listed_files(
         changed_files_list_file_name: str,
         affected_targets_list_file_name: str,
         build_file_processor: BuildNinjaFileProcessor = None):
-    print(f"Generating list of affected targets...")
+    print("Generating list of affected targets...")
 
     updated_targets = set()
     with open(build_dir / changed_files_list_file_name) as f:
@@ -377,7 +386,7 @@ def generate_list_of_targets_affected_by_listed_files(
 
     try:
         with open(build_dir / affected_targets_list_file_name) as f:
-            old_targets = set([l.rstrip() for l in f.readlines()])
+            old_targets = {l.rstrip() for l in f.readlines()}
     except:
         old_targets = None
 
@@ -420,10 +429,11 @@ def patch_ninja_build(
     # Patch the file only if it needs patching (it was not patched yet or its modification time is
     # older than the modification time of the patch script) or the patching is enforced by the
     # command-line parameter.
-    if not force_patch:
-        if not build_file_processor.needs_patching(script_version_timestamp=script_timestamp):
-            print(f"{file_name} is already patched, do nothing")
-            return
+    if not force_patch and not build_file_processor.needs_patching(
+        script_version_timestamp=script_timestamp
+    ):
+        print(f"{file_name} is already patched, do nothing")
+        return
 
     if not build_file_processor.is_loaded():
         build_file_processor.load_data()
@@ -448,10 +458,11 @@ def patch_rules_file(
     rules_file_processor = RulesNinjaFileProcessor(
         rules_file_name, build_directory=build_file_processor.build_directory)
 
-    if not force_patch:
-        if not rules_file_processor.needs_patching(script_version_timestamp=script_timestamp):
-            print(f"{rules_file_name} is already patched, do nothing")
-            return
+    if not force_patch and not rules_file_processor.needs_patching(
+        script_version_timestamp=script_timestamp
+    ):
+        print(f"{rules_file_name} is already patched, do nothing")
+        return
 
     rules_file_processor.load_data()
 

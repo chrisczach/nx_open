@@ -78,7 +78,7 @@ class RulesNinjaFileProcessor(NinjaFileProcessor):  # pylint:disable=too-few-pub
         if sys.platform == "win32" and not command.startswith("cmd.exe"):
             updated_rerun_command = f'cmd.exe /C "{command} && {self_run_string}"'
         else:
-            updated_rerun_command = command + f" && {self_run_string}"
+            updated_rerun_command = f"{command} && {self_run_string}"
 
         updated_line = f"  command = {updated_rerun_command}\n"
         self._lines[command_line_index] = Line(

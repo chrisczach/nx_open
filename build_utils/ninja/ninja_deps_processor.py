@@ -35,8 +35,7 @@ class NinjaDepsProcessor:
         for line in deps_data.splitlines():
             line_number += 1
             if not line.startswith(" "):
-                new_current_target = line[0:line.find(": ")]
-                if new_current_target:
+                if new_current_target := line[: line.find(": ")]:
                     # In build.ninja targets are written in the native format (e.g. with "\" as a
                     # directory separator on Windows), so we have to use the same format
                     # everywhere.
@@ -53,7 +52,7 @@ class NinjaDepsProcessor:
 
     def _generate_absolute_file_path_string(self, line: str) -> str:
         file_name = line.lstrip()
-        if file_name[0:3] != "../":
+        if file_name[:3] != "../":
             return file_name
 
         file_path = f"{self._build_dir_str}/{file_name}"
@@ -76,4 +75,4 @@ class NinjaDepsProcessor:
         if start is None or end is None:
             return file_path
 
-        return f"{file_path[0:start]}/{file_path[end:]}"
+        return f"{file_path[:start]}/{file_path[end:]}"

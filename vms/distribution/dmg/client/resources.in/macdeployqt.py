@@ -66,7 +66,7 @@ def main(build_dir, app_path, bindir, libdir, helpdir, qtdir, qtver):
         fix_binary(binary, bindir, libdir, qlibdir, tlibdir, qtver)
 
     resources_dir = "{app_path}/Contents/Resources".format(app_path=app_path)
-    help_dir = "{}/help".format(resources_dir)
+    help_dir = f"{resources_dir}/help"
     shutil.copytree(helpdir, help_dir)
     shutil.copy(join(bindir, 'launcher.version'), resources_dir)
 

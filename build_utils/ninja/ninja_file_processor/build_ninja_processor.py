@@ -251,10 +251,7 @@ class BuildNinjaFileProcessor(NinjaFileProcessor):
 
     def _get_target_line_by_name(self, target: str) -> Line:
         target_line_idx = self._line_number_by_output.get(target, None)
-        if target_line_idx is None:
-            return None
-
-        return self._lines[target_line_idx]
+        return None if target_line_idx is None else self._lines[target_line_idx]
 
     @classmethod
     def _is_target_phony(cls, target_line: Line) -> bool:
@@ -373,8 +370,7 @@ class BuildNinjaFileProcessor(NinjaFileProcessor):
                     *line_data.order_only_dependencies})
 
             elif line.type == LineType.COMMAND:
-                match = self._MOCARG_RE.fullmatch(line_data)
-                if match:
+                if match := self._MOCARG_RE.fullmatch(line_data):
                     files.add(match[1])
 
             elif line.type == LineType.DEPFILE:

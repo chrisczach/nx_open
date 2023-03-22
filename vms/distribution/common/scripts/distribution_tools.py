@@ -114,8 +114,7 @@ def ffmpeg_files(source_dir):
     )
 
     for template in templates:
-        for file in find_files_by_template(source_dir, template):
-            yield file
+        yield from find_files_by_template(source_dir, template)
 
 
 def openssl_files(source_dir):
@@ -125,9 +124,9 @@ def openssl_files(source_dir):
         templates = ['crypto*', 'ssl*']
 
     for template in templates:
-        files = find_files_by_template(source_dir, dynamic_library_filename(template, None, '*'))
-        for file in files:
-            yield file
+        yield from find_files_by_template(
+            source_dir, dynamic_library_filename(template, None, '*')
+        )
 
 
 def hidapi_files(source_dir):
@@ -162,21 +161,18 @@ def icu_files(icu_lib_directory):
         )
 
     for template in templates:
-        for file in find_files_by_template(icu_lib_directory, template):
-            yield file
+        yield from find_files_by_template(icu_lib_directory, template)
 
 def shared_libraries(directory: str) -> Generator[str, None, None]:
-    for file in Path(directory).glob(f"*{_dynamic_library_extension()}"):
-        yield file
+    yield from Path(directory).glob(f"*{_dynamic_library_extension()}")
 
 
 def qt_libraries(dir, libs, extension=None):
     for lib in libs:
-        for file in find_files_by_template(
-                dir,
-                dynamic_library_filename(f'Qt6{lib}', extension=extension) + '*'
-        ):
-            yield file
+        yield from find_files_by_template(
+            dir,
+            f"{dynamic_library_filename(f'Qt6{lib}', extension=extension)}*",
+        )
 
 
 def qt_plugins_files(qt_plugins_dir, libs):
@@ -265,6 +261,6 @@ def parse_generation_scripts_arguments():
                 config_part = shell_like_parse(f)
             else:
                 config_part = yaml.load(f, Loader=yaml.SafeLoader)
-            config.update(config_part)
+            config |= config_part
 
     return Arguments(config=config, output_file=args.output_file)

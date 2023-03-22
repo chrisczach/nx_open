@@ -17,6 +17,7 @@
 
 """Tokenize C++ source code."""
 
+
 try:
     # Python 3.x
     import builtins
@@ -43,7 +44,7 @@ INT_OR_FLOAT_DIGITS = set('01234567890eE-+')
 
 
 # C++0x string preffixes.
-_STR_PREFIXES = set(('R', 'u8', 'u8R', 'u', 'uR', 'U', 'UR', 'L', 'LR'))
+_STR_PREFIXES = {'R', 'u8', 'u8R', 'u', 'uR', 'U', 'UR', 'L', 'LR'}
 
 
 # Token types.
@@ -76,9 +77,11 @@ class Token(object):
         self.whence = WHENCE_STREAM
 
     def __str__(self):
-        if not utils.DEBUG:
-            return 'Token(%r)' % self.name
-        return 'Token(%r, %s, %s)' % (self.name, self.start, self.end)
+        return (
+            'Token(%r, %s, %s)' % (self.name, self.start, self.end)
+            if utils.DEBUG
+            else 'Token(%r)' % self.name
+        )
 
     __repr__ = __str__
 
@@ -102,10 +105,7 @@ def _GetString(source, start, i):
 def _GetChar(source, start, i):
     # NOTE(nnorwitz): may not be quite correct, should be good enough.
     i = source.find("'", i+1)
-    while source[i-1] == '\\':
-        # Need to special case '\\'.
-        if (i - 2) > start and source[i-2] == '\\':
-            break
+    while source[i - 1] == '\\' and (i - 2 <= start or source[i - 2] != '\\'):
         i = source.find("'", i+1)
     # Try to handle unterminated single quotes (in a #if 0 block).
     if i < 0:
@@ -166,15 +166,17 @@ def GetTokens(source):
         elif c == '/' and source[i+1] == '*':    # Find /* comments. */
             i = source.find('*/', i) + 2
             continue
-        elif c in ':+-<>&|*=':                   # : or :: (plus other chars).
+        elif c in ':+-<>&|*=':           # : or :: (plus other chars).
             token_type = SYNTAX
             i += 1
             new_ch = source[i]
-            if new_ch == c and c != '>':         # Treat ">>" as two tokens.
-                i += 1
-            elif c == '-' and new_ch == '>':
-                i += 1
-            elif new_ch == '=':
+            if (
+                new_ch == c
+                and c != '>'
+                or c == '-'
+                and new_ch == '>'
+                or new_ch == '='
+            ):         # Treat ">>" as two tokens.
                 i += 1
         elif c in '()[]{}~!?^%;/.,':             # Handle single char tokens.
             token_type = SYNTAX
@@ -211,7 +213,7 @@ def GetTokens(source):
         elif c == "'":                           # Find char.
             token_type = CONSTANT
             i = _GetChar(source, start, i)
-        elif c == '#':                           # Find pre-processor command.
+        elif c == '#':                   # Find pre-processor command.
             token_type = PREPROCESSOR
             got_if = source[i:i+3] == '#if' and source[i+3:i+4].isspace()
             if got_if:
@@ -229,7 +231,7 @@ def GetTokens(source):
                 i4 = source.find('"', i)
                 # NOTE(nnorwitz): doesn't handle comments in #define macros.
                 # Get the first important symbol (newline, comment, EOF/end).
-                i = min([x for x in (i1, i2, i3, i4, end) if x != -1])
+                i = min(x for x in (i1, i2, i3, i4, end) if x != -1)
 
                 # Handle #include "dir//foo.h" properly.
                 if source[i] == '"':
@@ -237,7 +239,7 @@ def GetTokens(source):
                     assert i > 0
                     continue
                 # Keep going if end of the line and the line ends with \.
-                if not (i == i1 and source[i-1] == '\\'):
+                if i != i1 or source[i - 1] != '\\':
                     if got_if:
                         condition = source[start+4:i].lstrip()
                         if (condition.startswith('0') or

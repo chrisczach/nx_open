@@ -14,9 +14,10 @@ def get_lib_dirs_from_compiler(compiler, compiler_flags=""):
     try:
         # Using shell=True to avoid the problems with splitting compiler_flags.
         lines = subprocess.check_output(
-            "{} --print-search-dirs {}".format(compiler, compiler_flags),
+            f"{compiler} --print-search-dirs {compiler_flags}",
             universal_newlines=True,
-            shell=True).split()
+            shell=True,
+        ).split()
     except subprocess.CalledProcessError as e:
         print("Could not get library search dirs from the compiler.", file=sys.stderr)
         print("Command failed:", e.cmd, file=sys.stderr)
@@ -46,10 +47,11 @@ def get_lib_dirs_from_link_flags(flags):
             if flags and flags[0][0] != "-":
                 result.append(flags.pop(0))
         else:
-            for prefix in prefixes:
-                if flag.startswith(prefix):
-                    result.append(flag[len(prefix):])
-
+            result.extend(
+                flag[len(prefix) :]
+                for prefix in prefixes
+                if flag.startswith(prefix)
+            )
     return result
 
 
@@ -71,7 +73,7 @@ def copy_library(file_name, target_dir, list_files=False):
     if list_files:
         print(target_file_name)
     else:
-        print("Copying {} -> {}".format(real_file, target_file_name))
+        print(f"Copying {real_file} -> {target_file_name}")
     if os.path.exists(target_file_name):
         os.remove(target_file_name)
     shutil.copy2(real_file, target_file_name)
@@ -81,7 +83,7 @@ def copy_library(file_name, target_dir, list_files=False):
         if list_files:
             print(target_symlink_name)
         else:
-            print("Symlink {} -> {}".format(real_basename, target_symlink_name))
+            print(f"Symlink {real_basename} -> {target_symlink_name}")
         if os.path.exists(target_symlink_name):
             os.remove(target_symlink_name)
         os.symlink(real_basename, target_symlink_name)
@@ -119,7 +121,7 @@ def main():
         file_name = find_library(lib, lib_dirs)
 
         if not file_name:
-            print("Failed to find library %s in directories:" % lib, file=sys.stderr)
+            print(f"Failed to find library {lib} in directories:", file=sys.stderr)
             for lib_dir in lib_dirs:
                 print(f"  {lib_dir}", file=sys.stderr)
             sys.exit(1)

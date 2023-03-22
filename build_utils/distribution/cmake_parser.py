@@ -11,9 +11,9 @@ def parse_boolean(value):
     boolean constants are case-insensitive.
     '''
     value = value.upper()
-    if value == "ON" or value == "YES" or value == "TRUE" or value == "Y":
+    if value in ["ON", "YES", "TRUE", "Y"]:
         return True
-    if value == "OFF" or value == "NO" or value == "FALSE" or value == "N":
+    if value in ["OFF", "NO", "FALSE", "N"]:
         return False
     if not value:
         return False

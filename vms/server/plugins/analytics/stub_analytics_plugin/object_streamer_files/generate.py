@@ -45,10 +45,10 @@ class ObjectTypeSupportInfoEncoder(json.JSONEncoder):
     ATTRIBUTES_KEY = 'attributes'
 
     def default(self, o: ObjectTypeSupportInfo) -> Dict:
-        result = {}
-        result[self.OBJECT_TYPE_ID_KEY] = o.object_type_id
-        result[self.ATTRIBUTES_KEY] = o.attributes
-        return result
+        return {
+            self.OBJECT_TYPE_ID_KEY: o.object_type_id,
+            self.ATTRIBUTES_KEY: o.attributes,
+        }
 
 class ObjectTypeInfo:
     '''Information needed for Device Agent Manifest generation.'''
@@ -98,9 +98,11 @@ class TypeLibraryEncoder(json.JSONEncoder):
     OBJECT_TYPES_KEY = 'objectTypes'
 
     def default(self, o: Manifest.TypeLibrary) -> Dict:
-        result = {}
-        result[self.OBJECT_TYPES_KEY] = [object_type.__dict__ for object_type in o.object_types]
-        return result
+        return {
+            self.OBJECT_TYPES_KEY: [
+                object_type.__dict__ for object_type in o.object_types
+            ]
+        }
 
 class ManifestEncoder(json.JSONEncoder):
     '''JSON Encoder for Manifest.'''
@@ -109,8 +111,7 @@ class ManifestEncoder(json.JSONEncoder):
     SUPPORTED_TYPES_KEY = 'supportedTypes'
 
     def default(self, o: Manifest) -> Dict:
-        result = {}
-        result[self.TYPE_LIBRARY_KEY] = TypeLibraryEncoder().default(o.type_library)
+        result = {self.TYPE_LIBRARY_KEY: TypeLibraryEncoder().default(o.type_library)}
         result[self.SUPPORTED_TYPES_KEY] = [
             ObjectTypeSupportInfoEncoder().default(object_type_support_info)
                 for object_type_support_info in o.supported_types]
@@ -221,12 +222,13 @@ class StreamEntryEncoder(json.JSONEncoder):
     ENTRY_TYPE_KEY = 'entryType'
 
     def default(self, o: StreamEntry) -> Dict:
-        result = {}
-        result[self.FRAME_NUMBER_KEY] = o.frame_number
-        result[self.TYPE_ID_KEY] = o.object_position.type_id
-        result[self.TRACK_ID_KEY] = o.object_position.track_id
-        result[self.ATTRIBUTES_KEY] = o.object_position.attributes
-        result[self.BOUNDING_BOX_KEY] = {}
+        result = {
+            self.FRAME_NUMBER_KEY: o.frame_number,
+            self.TYPE_ID_KEY: o.object_position.type_id,
+            self.TRACK_ID_KEY: o.object_position.track_id,
+            self.ATTRIBUTES_KEY: o.object_position.attributes,
+            self.BOUNDING_BOX_KEY: {},
+        }
         result[self.BOUNDING_BOX_KEY][self.TOP_LEFT_X_KEY] = o.object_position.bounding_box.x
         result[self.BOUNDING_BOX_KEY][self.TOP_LEFT_Y_KEY] = o.object_position.bounding_box.y
         result[self.BOUNDING_BOX_KEY][self.WIDTH_KEY] = o.object_position.bounding_box.width
@@ -287,8 +289,7 @@ class RandomMovementGenerator(Generator):
         AUTOMATIC_TYPE_ID_PREFIX = 'stub.objectStreamer.custom.'
 
         def __init__(self, config):
-            object_type_id = config.get(self.OBJECT_TYPE_ID_KEY)
-            if object_type_id:
+            if object_type_id := config.get(self.OBJECT_TYPE_ID_KEY):
                 self.object_type_id = object_type_id
             else:
                 self.object_type_id = self.AUTOMATIC_TYPE_ID_PREFIX + str(uuid.uuid4())
@@ -441,17 +442,15 @@ class GenerationManager:
         manifest.type_library = copy.deepcopy(self.type_library)
 
         object_type_ids = set()
-        type_library_object_type_ids = set()
-
-        for object_type in manifest.type_library.object_types:
-            type_library_object_type_ids.add(object_type.id)
-
+        type_library_object_type_ids = {
+            object_type.id for object_type in manifest.type_library.object_types
+        }
         for context in self.generation_contexts:
             object_type_info = context.track_generator.object_type_info()
             if object_type_info.object_type.id in object_type_ids:
                 continue
 
-            if not object_type_info.object_type.id in type_library_object_type_ids:
+            if object_type_info.object_type.id not in type_library_object_type_ids:
                 object_type = ObjectType()
                 object_type.id = object_type_info.object_type.id
 

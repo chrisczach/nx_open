@@ -50,7 +50,7 @@ def generate(n: int):
     i = 1
     while i <= n:
         line = INDENT
-        for _ in range(NUMBERS_PER_LINE if (n - i + 1) > NUMBERS_PER_LINE else (n - i + 1)):
+        for _ in range(min(n - i + 1, NUMBERS_PER_LINE)):
             line += f"_{i}, "
             i += 1
         line += "\\\n"
